@@ -145,14 +145,14 @@ function ProfileView(){
         <div className="inputs">
             <input type="file" name="image" onChange={onImageChange} />
             <Button onClick={updateProfileImage} type="secondary">Cambiar foto de perfil</Button>
-            <hr />
+            
         </div>
         <div className="inputs">
             <Input name="password" type="password" onChangeValue={onPasswordChange} label="Password" />
             <Button onClick={updatePassword} type="secondary">Cambiar contraseña</Button>
         </div>
     </section>
-    <Graphs/>
+    <Graphs scores={currentScoreList} />
   </main>
   <Footer/>
 </div>)

@@ -101,7 +101,8 @@ function AdminView() {
             />
         </section>
         
-        <Graphs className="graphs"></Graphs>
+        {/* <Graphs className="graphs"></Graphs> */}
+        <Graphs scores={scoreList} />
       </main>
       <Footer/>
     </div>

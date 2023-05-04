@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -12,20 +12,17 @@ code {
     monospace;
 }
 
-/* Reset default padding and margin */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Set body font and background */
 body {
   font-family: Arial, sans-serif;
   background-color: #f2f2f2;
 }
 
-/* Style the navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -84,7 +81,6 @@ nav img {
   background-color: #72b840;
 }
 
-/* Style the main content */
 .container {
   
   padding: 20px;
@@ -131,7 +127,6 @@ th {
 }
 
 
-/* Style the footer */
 footer {
   position: bottom;
   bottom: 0;
@@ -146,7 +141,6 @@ footer p{
   font-size: 20px;
 }
 
-/* Responsive styles */
 @media screen and (max-width: 768px) {
   main{
     margin-bottom: 8%;
@@ -206,4 +200,4 @@ footer p{
   footer {
     padding: 6px;
   }
-}
+} */
