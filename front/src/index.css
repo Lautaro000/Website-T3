@@ -105,6 +105,18 @@ section {
   box-shadow: 6px 6px 8px 2px rgba(114, 184, 64, 0.543);
 }
 
+#fields{
+  display: flex;
+  padding: 2rem;
+  justify-content: space-between;
+
+}
+.inputs{
+  /* border: black 2px solid; */
+  
+
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
