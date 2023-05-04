@@ -147,7 +147,7 @@ function ProfileView(){
             <Button onClick={updateProfileImage} type="secondary">Cambiar foto de perfil</Button>
             
         </div>
-        <div className="inputs">
+        <div id="inptB" className="inputs">
             <Input name="password" type="password" onChangeValue={onPasswordChange} label="Password" />
             <Button onClick={updatePassword} type="secondary">Cambiar contraseña</Button>
         </div>

@@ -112,9 +112,12 @@ section {
 
 }
 .inputs{
-  /* border: black 2px solid; */
+  width: auto;
+  margin: 0 auto 0 ;
+}
+#inptB Button{
+  margin: 10px auto 0 auto;
   
-
 }
 
 table {

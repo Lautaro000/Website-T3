@@ -14,10 +14,16 @@ function Input(props){
         props.onChangeValue && props.onChangeValue(props.name, value)
     },[value])
 
-    return(<div className="row mt-2">
-    <div className="col"><label className="form-label">{props.label}</label></div>
-    <div className="col"><input autoComplete={"off"} type={props.type ||"text"}className="form-control" onChange={(e)=>{setValue(e.target.value)}} value={value}/></div>
-    </div>)
+    return(
+        <div className="row mt-2">
+        <div className="col-6">
+          <label className="form-label">{props.label}</label>
+        </div>
+        <div className="col-6">
+          <input autoComplete={"off"} type={props.type ||"text"} className="form-control" onChange={(e)=>{setValue(e.target.value)}} value={value}/>
+        </div>
+      </div>
+    )
 }
 
 export default Input;
