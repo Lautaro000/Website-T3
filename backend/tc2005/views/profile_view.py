@@ -30,9 +30,8 @@ class ProfileView(viewsets.ModelViewSet):
         serializer = ProfileSerializer(instance = profile,many = True, context = {'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK) 
 
-    @action(methods=["PUT"],  detail=False, serializer_class=ImageSerializer, permission_classes=[AllowAny])
-    def change_picture(self, request):
-
+    @action(methods=["POST"], detail=False, serializer_class=ImageSerializer, permission_classes=[IsAuthenticated])
+    def update_image(self, request):
         serializer = ImageSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -40,7 +39,21 @@ class ProfileView(viewsets.ModelViewSet):
             profile = Profile.objects.get(user=user)
             profile.image = serializer.validated_data["image"]
             profile.save()
-        
-            return Response({"detail": "Image saved"}, status=status.HTTP_200_OK) 
+
+            return Response({"detail": "Image saved"}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    @action(methods=["POST"], detail=False, permission_classes=[IsAuthenticated])
+    def update_password(self, request):
+        data = request.data
+
+        if 'password' in data:
+            user = request.user
+            new_password = data['password']
+            user.set_password(new_password)
+            user.save()
+            return Response({"success": True, "message": "Password updated."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "message": "Password not found in request."}, status=status.HTTP_400_BAD_REQUEST)

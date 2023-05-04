@@ -11,7 +11,8 @@ import AdminView from "./paginas/AdminView";
 import HomeView from "./paginas/HomeView";
 import withAdminAuth from "./components/withAdminAuth";
 import withAuth from "./components/withAuth";
-
+//import SignUpV from "./paginas/SignUpV";
+import SignUpV from "./paginas/SignUpV";
 function App() {
   const logout = () => {
     localStorage.clear();
@@ -69,7 +70,8 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-        <Route path="/login" element={<LoginV/>}></Route>
+          <Route path="/login" element={<LoginV/>}></Route>
+          <Route path="/signup" element={<SignUpV />} />
           <Route path="/" element={<HomeView/>}></Route>
           <Route path="/game" element={<GameView/>}></Route>
           <Route path="/admin" element={<AdminView />} ></Route>
@@ -85,6 +87,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginV/>}></Route>
           <Route path="/" element={<HomeView/>}></Route>
+          <Route path="/signup" element={<SignUpV />} />
 
           <Route path="/game" element={<LoginV/>}></Route>
           <Route path="/admin" element={<LoginV />} ></Route>

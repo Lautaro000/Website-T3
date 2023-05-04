@@ -28,8 +28,17 @@ router.register("users", viewset=UserView)
 router.register("scores", viewset=ScoreboardView)
 router.register("profile", viewset=ProfileView)
 
+
 urlpatterns = [
     path("api/", include(router.urls)),
-    path('api-auth/', include('rest_framework.urls'))
-    
+    path('api-auth/', include('rest_framework.urls')),
+
+
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+urlpatterns += [
+    path("api/profile/update_password/", ProfileView.as_view({'post': 'update_password'})),
+]
+urlpatterns += [
+    path("api/profile/update_image/", ProfileView.as_view({'post': 'update_image'})),
+]
