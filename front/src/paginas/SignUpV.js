@@ -9,7 +9,12 @@ import { useNavigate } from "react-router-dom";
 
 function SignUpV  ()  {
   const [msg, setMsg] = useState("");
-  const [data, setData] = useState({});
+  
+  const [data, setData] = useState({
+    total_score: 1,
+    average_score: 1,
+    last_login: new Date().toISOString(),
+  });
   const navigate = useNavigate();
 
   const onChangeValue = (name, value) => {
@@ -21,13 +26,17 @@ function SignUpV  ()  {
     setMsg("");
 
     API.call(
-      "users/register/", // Change the endpoint to the one used for user registration
+      "users/",
       (response) => {
         console.log(response);
         window.location.href = "/";
       },
       (response) => {
         console.log(response);
+        // Log the error response data
+        response.json().then((errorData) => {
+          console.log("Error data:", errorData);
+        });
         setMsg(response.error);
       },
       {
@@ -35,6 +44,8 @@ function SignUpV  ()  {
         body: JSON.stringify(data),
       }
     );
+    
+
   };
 
   const sign = () => {
@@ -44,7 +55,7 @@ function SignUpV  ()  {
   return (
     <div className="cover">
       <h1>Sign Up</h1>
-      <Input name="username" onChangeValue={onChangeValue} label="Username" />
+      {/* <Input name="username" onChangeValue={onChangeValue} label="Username" /> */}
       <Input name="email" onChangeValue={onChangeValue} label="Email" />
       <Input name="first_name" onChangeValue={onChangeValue} label="First Name" />
       <Input

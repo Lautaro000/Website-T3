@@ -52,6 +52,8 @@ class User(AbstractBaseUser):
     def average_score(self):
         from .scoreboad import Scoreboard
         scores = Scoreboard.objects.all().filter(user=self)
+        if len(scores) == 0:
+            return 0
         return self.total_score / len(scores)
 
 
