@@ -15,7 +15,7 @@
 .cover {
     background-color: white;
     width: 25em;
-    height: 30em;
+    height: 43em;
     position: relative;
     border-radius: 1em;
     box-shadow: 0 0.188em 1.550em rgb(156, 156, 156);
@@ -25,6 +25,7 @@
     justify-content: space-around;
     top: 70%;
     left: 35%;
+    margin-top: 5%;
 }
 
 input {
@@ -57,4 +58,13 @@ input:focus {
 
 .loginbutton:hover {
     transform: scale(1.10);
+}
+
+#signinlink{
+    display: flex;
+    padding: auto 0;
+}
+#signinlink p{
+    margin-right: 15px;
+    padding-top: 10px;
 }

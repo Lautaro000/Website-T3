@@ -17,7 +17,7 @@ function AdminView() {
   const [message, setMessage] = useState("");
   const [userScoreList, setUserScoreList] = useState([]);
   const [currentScoreList, setCurrentScoreList] = useState([]);
-  const [specificUserEmail, setSpecificUserEmail] = useState("a00835462@tec.mx");
+  const [specificUserEmail, setSpecificUserEmail] = useState("");
   const handleUserSelection = (email) => {
     setSpecificUserEmail(email);
   };

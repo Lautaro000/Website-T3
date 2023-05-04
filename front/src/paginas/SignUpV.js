@@ -3,10 +3,14 @@ import "../styles/login.css";
 import API from "../utils/API";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { useNavigate } from "react-router-dom";
+
+
 
 function SignUpV  ()  {
   const [msg, setMsg] = useState("");
   const [data, setData] = useState({});
+  const navigate = useNavigate();
 
   const onChangeValue = (name, value) => {
     setData({ ...data, [name]: value });
@@ -33,11 +37,16 @@ function SignUpV  ()  {
     );
   };
 
+  const sign = () => {
+    navigate("/LogIn");
+  };
+
   return (
     <div className="cover">
       <h1>Sign Up</h1>
       <Input name="username" onChangeValue={onChangeValue} label="Username" />
       <Input name="email" onChangeValue={onChangeValue} label="Email" />
+      <Input name="first_name" onChangeValue={onChangeValue} label="First Name" />
       <Input
         name="password"
         type={"password"}
@@ -54,6 +63,12 @@ function SignUpV  ()  {
       <Button onClick={onSubmit} type="primary">
         Sign Up
       </Button>
+      <div id="signinlink">
+        <p>Have an Account?</p>{" "}
+        <Button onClick={sign} type="primary">
+          Log In
+        </Button>
+      </div>
     </div>
   );
 };

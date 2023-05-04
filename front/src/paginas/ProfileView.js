@@ -119,7 +119,7 @@ function ProfileView(){
     <main className="container">
     <section>
         <Table headers = {[
-            {title:"", key:"image", render: (value)=>{ return (<> <img className="rounded-circle" height={50} src={value}/></>)} },
+            {title:"", key:"image", render: (value)=>{ return (<> <img className="rounded-circle" height={10} src={value}/></>)} },
             {title:"Email", key:"user.email"},
             {title:"First Name", key:"user.first_name"},
             {title:"Total score", key:"user.total_score"},
