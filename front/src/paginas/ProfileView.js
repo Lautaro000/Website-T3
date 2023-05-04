@@ -58,13 +58,13 @@ function ProfileView(){
 
     const onImageChange = (event) => {
         setSelectedImage(event.target.files[0]);
-      };
+    };
       
-      const onPasswordChange = (name, value) => {
+    const onPasswordChange = (name, value) => {
         setNewPassword(value);
-      };
+    };
       
-      const updateProfileImage = (file) => {
+    const updateProfileImage = (file) => {
         let formData = new FormData();
         formData.append("image", file);
         
@@ -85,10 +85,8 @@ function ProfileView(){
             }
         );
     };
-    
-    
       
-      const updatePassword = () => {
+    const updatePassword = () => {
         API.call(
           "profile/update_password/",
           (response) => {
@@ -102,7 +100,7 @@ function ProfileView(){
             body: JSON.stringify({ password: newPassword }),
           }
         );
-      };
+    };
       
 
 
@@ -143,23 +141,21 @@ function ProfileView(){
 
         ]} data = {currentScoreList}/>}
     </section>
-        <section id="fields">
-            <div className="inputs">
-                <input type="file" name="image" onChange={onImageChange} />
-                <Button onClick={updateProfileImage} type="secondary">Cambiar foto de perfil</Button>
-                <hr />
-            </div>
-            <div className="inputs">
-                <Input name="password" type="password" onChangeValue={onPasswordChange} label="Password" />
-                <Button onClick={updatePassword} type="secondary">Cambiar contraseña</Button>
-            </div>
-        </section>
-        <Graphs/>
-    
-        </main>
-        <Footer/>
-
-    </div>)
+    <section id="fields">
+        <div className="inputs">
+            <input type="file" name="image" onChange={onImageChange} />
+            <Button onClick={updateProfileImage} type="secondary">Cambiar foto de perfil</Button>
+            <hr />
+        </div>
+        <div className="inputs">
+            <Input name="password" type="password" onChangeValue={onPasswordChange} label="Password" />
+            <Button onClick={updatePassword} type="secondary">Cambiar contraseña</Button>
+        </div>
+    </section>
+    <Graphs/>
+  </main>
+  <Footer/>
+</div>)
 }
 
 export default ProfileView;

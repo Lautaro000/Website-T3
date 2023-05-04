@@ -9,22 +9,41 @@ import Graphs from "../components/Graphs";
 import Footer from "../components/Footer";
 
 function AdminView() {
-  // Sample data, replace with actual API call to fetch the data
-  const [employees, setEmployees] = useState([
-    { id: 0, name: "John Doe", score: 0, gamesPlayed: 0 },
-  ]);
 
-  // Define table headers
-  const headers = [
-    { title: "EmployeeID", key: "id" },
-    { title: "EmployeeName", key: "name" },
-    { title: "Score", key: "score" },
-    { title: "Games played", key: "gamesPlayed" },
-  ];
 
-  const[scoreList, setScoreList] = useState([])
-  const[isLoading, setLoading] = useState(false)
-  const[message, setMessage] = useState("")
+
+  const [scoreList, setScoreList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [userScoreList, setUserScoreList] = useState([]);
+  const [currentScoreList, setCurrentScoreList] = useState([]);
+  const [specificUserEmail, setSpecificUserEmail] = useState("a00835462@tec.mx");
+  const handleUserSelection = (email) => {
+    setSpecificUserEmail(email);
+  };
+
+
+  const loadSpecificUserScores = () => {
+    setLoading(true);
+    setMessage("");
+    API.call(
+      `scores/specific_user_scores/?email=${specificUserEmail}`,
+      (response) => {
+        console.log(response);
+        setCurrentScoreList(response);
+        setLoading(false);
+      },
+      (error) => {
+        setMessage("Error en el sistema");
+        console.log(error);
+        setLoading(false);
+      }
+    );
+  };
+
+  useEffect(() => {
+    loadSpecificUserScores();
+  }, [specificUserEmail]);
 
   const loadData = () =>{
       setLoading(true)
@@ -48,10 +67,6 @@ function AdminView() {
       loadData()
   },[])
 
-  const logout = () => {
-      localStorage.clear();
-      window.location.href = "/login"
-    }
 
   return (
     <div>
@@ -59,23 +74,33 @@ function AdminView() {
 
       <main className="container">
         <section id="dashboard">
-          <h2>Dashboard Engine Escape</h2>
+          <h2>User Scores</h2>
 
           
-            <Table headers={headers} data={employees} />
+          <Table
+              headers={[
+                { title: "User", key: "user.email" },
+                { title: "Score", key: "score" },
+                { title: "Average score", key: "user.average_score" },
+                { title: "Total score", key: "user.total_score" },
+              ]}
+              data={currentScoreList}
+            />
         </section>
 
         <section id="dashboard2">
-        <Table headers = {[
-            {title: "User", key:"user.email"},
-            {title: "Score", key: "score"},
-            {title: "Average score", key: "user.average_score"},
-            {title: "Total score", key: "user.total_score"},
-            {title:"", key:"id", render: (value)=>{ return (<Link to={`/scores/${value}`}> Ver perfil</Link>)}}
-        ]} data = {scoreList}/>
+          <h2>Dashboard Engine Escape</h2>
+          <Table headers = {[
+              {title: "User", key:"user.email"},
+              {title: "Score", key: "score"},
+              {title: "Average score", key: "user.average_score"},
+              {title: "Total score", key: "user.total_score"},
+              {title: "",key: "user.email", render: (email) => {return ( <Link to="#" onClick={(e) => { e.preventDefault(); handleUserSelection(email); }}> Ver perfil </Link>);},},
+            ]}
+              data={scoreList}
+            />
         </section>
         
-
         <Graphs className="graphs"></Graphs>
       </main>
       <Footer/>

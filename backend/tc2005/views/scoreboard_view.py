@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import  status
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from ..models import User
 
@@ -48,10 +50,18 @@ class ScoreboardView(viewsets.ModelViewSet):
         serializer = ScoreboardSerializer(instance = scoreboard,many = True, context = {'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    @action(methods=["GET"],  detail=False, permission_classes=[IsAuthenticated])
-    def get_user_scores(self, request):
-        user = User.objects.filter(email = request.user)[0]
-        scoreboard = Scoreboard.objects.filter(user = user)
-        print(user)
-        serializer = ScoreboardSerializer(instance = scoreboard,many = True, context = {'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+    @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
+    def specific_user_scores(self, request):
+        specific_email = request.query_params.get('email', None)
+        if specific_email:
+            specific_user = User.objects.filter(email=specific_email).first()
+            if specific_user:
+                scoreboard = Scoreboard.objects.filter(user=specific_user)
+                serializer = ScoreboardSerializer(instance=scoreboard, many=True, context={'request': request})
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "Email parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
