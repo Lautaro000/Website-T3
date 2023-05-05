@@ -73,9 +73,34 @@ class UserView(viewsets.ModelViewSet):
             token, created = Token.objects.get_or_create(user=user)
             print(token)
 
-            return Response({"token":token.key}, status=status.HTTP_200_OK)
+            return Response({"token":token.key, "admin":user.is_staff}, status=status.HTTP_200_OK)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)       
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(methods=["POST"],  detail=False, permission_classes=[AllowAny])
+    def create_admin(self, request):
+
+        serializer = UserSerializer(data=request.data)
+        user =  None
+
+        if serializer.is_valid():
+            user =  User.objects.create_superuser(
+                email=serializer.validated_data["email"],
+                password=serializer.validated_data["password"],
+                first_name=serializer.validated_data["first_name"],
+                last_login=serializer.validated_data["last_login"],
+            )
+            
+            print(user)
+            
+            user.save()
+            response = UserSerializer(instance=user, context={'request': request} )
+
+            return Response(response.data, status=status.HTTP_200_OK)
+        
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
 
     # Signup
     def create(self, request):

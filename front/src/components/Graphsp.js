@@ -9,26 +9,34 @@ import {
   Legend,
   CartesianGrid,
   Bar,
+  LineChart,
+  Line,
 } from "recharts";
 import "../styles/index.css";
 
 function Graphsp({ scores, displayUser }) {
-    const pieData = scores.map((score) => ({
+  const pieData = scores.map((score) => ({
     name: score.user.email,
     TotalScore: score.user.total_score,
   }));
 
-  const targetUser = scores.length > 0 ? scores[0].user.email : null;
-// const targetUser = displayUser || (scores.length > 0 ? scores[0].user.email : null);
+  const targetUser = displayUser || (scores.length > 0 ? scores[0].user.email : null);
 
-  const targetUserScores = scores
-    .filter((score) => score.user.email === targetUser)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 4);
+  const targetUserScore = scores.find((score) => score.user.email === targetUser);
 
-  const barData = targetUserScores.map((score) => ({
+  const barData = targetUserScore
+    ? [
+        {
+          name: targetUserScore.user.email,
+          Score: targetUserScore.score,
+        },
+      ]
+    : [];
+
+  const lineData = scores.map((score) => ({
     name: score.user.email,
     Score: score.score,
+    Time: score.timestamp,
   }));
 
   return (
@@ -37,7 +45,7 @@ function Graphsp({ scores, displayUser }) {
         <h2>Graphs</h2>
         {scores.length > 0 ? (
           <div className="graphs">
-            <PieChart width={400} height={400}>
+            {/* <PieChart width={400} height={400}>
               <Pie
                 dataKey="TotalScore"
                 isAnimationActive={false}
@@ -49,7 +57,7 @@ function Graphsp({ scores, displayUser }) {
                 label
               />
               <Tooltip />
-            </PieChart>
+            </PieChart> */}
             <BarChart
               width={400}
               height={400}
@@ -73,6 +81,24 @@ function Graphsp({ scores, displayUser }) {
               <CartesianGrid strokeDasharray="3 3" />
               <Bar dataKey="Score" fill="#72b840" background={{ fill: "#eee" }} />
             </BarChart>
+            <LineChart
+              width={400}
+              height={400}
+              data={lineData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 80,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="Time" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="Score" stroke="#72b840" activeDot={{ r: 8 }} />
+            </LineChart>
           </div>
         ) : (
           <p>No data available</p>
@@ -83,9 +109,8 @@ function Graphsp({ scores, displayUser }) {
 }
 
 Graphsp.defaultProps = {
-    scores: [],
-    displayUser: null, 
-  };
-  
+  scores: [],
+  displayUser: null,
+};
 
 export default Graphsp;

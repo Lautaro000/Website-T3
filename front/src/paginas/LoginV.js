@@ -22,6 +22,7 @@ const LoginV = () => {
       "users/login/",
       (response) => {
         console.log(response);
+        localStorage.setItem("admin",response.admin);
         localStorage.setItem("token", response.token);
         localStorage.setItem("dataKey", JSON.stringify({ email: data.email }));
         window.location.href = "/profile";
@@ -29,6 +30,7 @@ const LoginV = () => {
       (response) => {
         console.log(response);
         setMsg(response.error);
+        alert("The username or password is incorrect")
       },
       {
         method: "post",

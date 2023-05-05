@@ -2,14 +2,14 @@ from rest_framework import viewsets
 from tc2005.models import Scoreboard
 from tc2005.serializers.scoreboard_serializer import ScoreboardSerializer, ScoreSerializer
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import  status
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-
 from ..models import User
+
 
 class ScoreboardView(viewsets.ModelViewSet):
     queryset = Scoreboard.objects.all() # Select * from user;
@@ -17,7 +17,7 @@ class ScoreboardView(viewsets.ModelViewSet):
     authentication_classes = (SessionAuthentication, TokenAuthentication, )
     permission_classes = [IsAuthenticated]
 
-    @action(methods=["POST"],  detail=False, serializer_class=ScoreSerializer, permission_classes=[IsAuthenticated])
+    @action(methods=["POST"], detail=False, serializer_class=ScoreSerializer, permission_classes=[IsAuthenticated])
     def register_score(self, request):
 
         serializer = ScoreSerializer(data=request.data)
@@ -26,7 +26,10 @@ class ScoreboardView(viewsets.ModelViewSet):
             user = User.objects.get(email=request.user)
             score = Scoreboard.objects.create(
                 user=user,
-                score=serializer.validated_data["score"]
+                score=serializer.validated_data["score"],
+                tasks=serializer.validated_data["tasks"],
+                time=serializer.validated_data["time"],
+                completed=serializer.validated_data["completed"]
             )
             score.save()
         
@@ -34,19 +37,39 @@ class ScoreboardView(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-    @action(methods=["GET"],  detail=False, permission_classes=[IsAuthenticated])
+    @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
     def current_user_scores(self, request):
-        user = User.objects.filter(email = request.user)[0]
-        scoreboard = Scoreboard.objects.filter(user = user)
-        print(user)
+        user = User.objects.filter(email=request.user)[0]
+        scoreboard = Scoreboard.objects.filter(user=user)
+        serializer = ScoreboardSerializer(instance=scoreboard, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # @action(methods=["GET"], detail=False, permission_classes=[IsAuthenticated])
+    # def filter_user_scores(self, request):
+    #     user = User.objects.filter(email=request.user)[0]
+    #     scoreboard = Scoreboard.objects.filter(user=user, score__gt=200)
+    #     serializer = ScoreboardSerializer(instance=scoreboard, many=True, context={'request': request})
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+    @action(methods=["GET"],  detail=False, permission_classes=[IsAdminUser])
+    def filter_user_scores(self, request):
+        scoreboard = Scoreboard.objects.filter(score__gt=0, score__lt=200)
+        print(scoreboard)
         serializer = ScoreboardSerializer(instance = scoreboard,many = True, context = {'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(methods=["GET"],  detail=False, permission_classes=[IsAuthenticated])
-    def filter_user_scores(self, request):
-        user = User.objects.filter(email = request.user)[0]
-        scoreboard = Scoreboard.objects.filter(user = user, score__gt=200)
-        print(user)
+    @action(methods=["GET"],  detail=False, permission_classes=[IsAdminUser])
+    def filter_user_scores_200(self, request):
+        scoreboard = Scoreboard.objects.filter(score__gte=200, score__lt=500)
+        print(scoreboard)
+        serializer = ScoreboardSerializer(instance = scoreboard,many = True, context = {'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=["GET"],  detail=False, permission_classes=[IsAdminUser])
+    def filter_user_scores_500(self, request):
+        scoreboard = Scoreboard.objects.filter(score__gte=500, score__lte=1000)
+        print(scoreboard)
         serializer = ScoreboardSerializer(instance = scoreboard,many = True, context = {'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     

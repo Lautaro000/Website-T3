@@ -58,7 +58,6 @@
 
 // export default Graphs;
 
-
 import React from "react";
 import {
   PieChart,
@@ -74,19 +73,25 @@ import {
 import "../styles/index.css";
 
 function Graphs({ scores }) {
-  const pieData = scores.map((score) => ({
+  const tasksCompleted = scores
+    .filter((score) => score.completed)
+    .reduce((accumulator, score) => accumulator + score.tasks, 0);
+
+  const totalTime = scores.reduce(
+    (accumulator, score) => accumulator + score.time,
+    0
+  );
+
+  const pieData = [
+    { name: "Tasks Completed", value: tasksCompleted },
+    { name: "Total Time (min)", value: totalTime },
+  ];
+
+  const barData = scores.map((score) => ({
     name: score.user.email,
-    TotalScore: score.user.total_score,
+    Tasks: score.tasks,
+    Time: score.time,
   }));
-
-  const sortedByAvgScore = scores
-    .map((score) => ({
-      name: score.user.email,
-      AvgScore: score.user.average_score,
-    }))
-    .sort((a, b) => b.AvgScore - a.AvgScore);
-
-  const barData = sortedByAvgScore.slice(0, 4);
 
   return (
     <section id="Graph">
@@ -96,7 +101,7 @@ function Graphs({ scores }) {
           <div className="graphs">
             <PieChart width={400} height={400}>
               <Pie
-                dataKey="TotalScore"
+                dataKey="value"
                 isAnimationActive={false}
                 data={pieData}
                 cx={200}
@@ -128,7 +133,8 @@ function Graphs({ scores }) {
               <Tooltip />
               <Legend />
               <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="AvgScore" fill="#72b840" background={{ fill: "#eee" }} />
+              <Bar dataKey="Tasks" fill="#72b840" />
+              <Bar dataKey="Time" fill="#8884d8" />
             </BarChart>
           </div>
         ) : (

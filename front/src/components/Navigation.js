@@ -10,6 +10,8 @@ const Navbar = () => {
     localStorage.clear();
     window.location.href = "/login"
   }
+  
+  var Admin = localStorage.getItem("admin");
 
   return (
     // <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -56,7 +58,7 @@ const Navbar = () => {
           {/* <li><a href="#about">About</a></li>
           <li><a href="#dashboard">Dashboard</a></li> */}
           <li><a href="/profile">Profile</a></li>
-          <li><a href="/admin">Admin</a></li>
+          {Admin === "true" ? (<li><a href="/admin">Admin</a></li>): (<div></div>)}
           <li><a href="/game">Game</a></li>
           
           {/* <li><a href="/scores">Scoreboard</a></li> */}
