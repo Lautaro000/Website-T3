@@ -91,8 +91,8 @@ WSGI_APPLICATION = 'tc2005.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'Simulator',
+        'ENGINE': 'mssql',
+        'NAME': 'RiskSimulator',
         'USER': 'sa',
         'PASSWORD': 'password',
         'HOST': 'ATP',
