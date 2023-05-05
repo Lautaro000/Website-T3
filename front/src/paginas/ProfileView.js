@@ -4,19 +4,22 @@ import API from "../utils/API";
 import Spinner from "../components/Spinner";
 import Button from "../components/Button";
 import Navbar from "../components/Navigation";
-import Graphs from "../components/Graphs";
+import Graphsp from "../components/Graphsp";
 import Footer from "../components/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/scoreboard.css";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Input from "../components/Input";
 
 function ProfileView(){
 
     const[profileList, setProfileList] = useState([])
+    const userEmail = profileList.length > 0 ? profileList[0].user.email : null;
     const[currentScoreList, setCurrentScoreList] = useState([])
     const[isLoading, setLoading] = useState(false)
     const[message, setMessage] = useState("")
+    const [selectedImage, setSelectedImage] = useState([]);
+    const [newPassword, setNewPassword] = useState("");
 
     const loadData = () =>{
         setLoading(true)
@@ -53,9 +56,6 @@ function ProfileView(){
         )
     }
 
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [newPassword, setNewPassword] = useState("");
-
     const onImageChange = (event) => {
         setSelectedImage(event.target.files[0]);
     };
@@ -63,25 +63,24 @@ function ProfileView(){
     const onPasswordChange = (name, value) => {
         setNewPassword(value);
     };
-      
-    const updateProfileImage = (file) => {
-        let formData = new FormData();
-        formData.append("image", file);
+
+    const updateProfileImage = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("image", selectedImage);
         
-        API.call(
+        API.call2(
             "profile/update_image/",
             (response) => {
               console.log(response);
+              console.log("Your profile picture has been updated")
             },
             (error) => {
               console.log(error);
             },
             {
-              method: "POST",
+              method: "post",
               body: formData,
-              headers: {
-                "Content-Type": null,
-              },
             }
         );
     };
@@ -91,6 +90,7 @@ function ProfileView(){
           "profile/update_password/",
           (response) => {
             console.log(response);
+            console.log("your password has been updated")
           },
           (error) => {
             console.log(error);
@@ -126,7 +126,6 @@ function ProfileView(){
             {title:"Average score", key:"user.average_score"},
             {title:"Last login", key:"user.last_login"},
 
-
         ]} data = {profileList}/>
     </section>
     <section>
@@ -152,7 +151,7 @@ function ProfileView(){
             <Button onClick={updatePassword} type="secondary">Cambiar contraseña</Button>
         </div>
     </section>
-    <Graphs scores={currentScoreList} />
+    <Graphsp scores={currentScoreList} displayUser={userEmail} />
   </main>
   <Footer/>
 </div>)

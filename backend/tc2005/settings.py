@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'sa',
         'PASSWORD': 'password',
         'HOST': 'ATP',
-        'PORT': 'p',
+        'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
             'MARS_Connection': 'True',
