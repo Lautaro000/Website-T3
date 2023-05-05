@@ -34,25 +34,26 @@ import Navbar from "../components/Navigation";
 
 function GameView(){
     const { unityProvider } = useUnityContext({
-        loaderUrl: "unity_build/Build/WebGL_Builds.loader.js",
-        dataUrl: "unity_build/Build/WebGL_Builds.data.unityweb",
-        frameworkUrl: "unity_build/Build/WebGL_Builds.framework.js.unityweb",
-        codeUrl: "unity_build/Build/WebGL_Builds.wasm.unityweb",
+        loaderUrl: "Build/WebGL_Builds.loader.js",
+        dataUrl: "Build/WebGL_Builds.data.unityweb",
+        frameworkUrl: "Build/WebGL_Builds.framework.js.unityweb",
+        codeUrl: "Build/WebGL_Builds.wasm.unityweb",
       });
 
    return (<div>
 
     <Navbar className="navbar"/>
-   <section>
+    <main className="container">
+   <div id="game">
    <Unity unityProvider={unityProvider} 
             style = {{
-                width: "1430px",
-                height: "800px",
+                width: "715px",
+                height: "400px",
                 border: "2px solid black",
                 alignSelf: 'center',
             }}/>
-    </section>
-            
+    </div>
+    </main>
     </div>);
 }
 
