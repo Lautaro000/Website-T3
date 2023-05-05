@@ -82,27 +82,43 @@ WSGI_APPLICATION = 'tc2005.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'Simulator',
+        'USER': 'sa',
+        'PASSWORD': 'password',
+        'HOST': 'ATP',
+        'PORT': 'p',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'MARS_Connection': 'True',
+        },
     }
 }
 
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'sql_server.pyodbc',
-#         'NAME': 'RR',
-#         'USER': 'ATP\Jesus',
+#         'NAME': 'Simulator',
+#         'USER': 'Jesus',
 #         'PASSWORD': '',
-#         'HOST': 'localhost',
-#         'PORT': '8000',
+#         'HOST': 'localhost',  # or the IP address of your local SQL Server instance
+#         'PORT': '',  # Leave empty if you are using the default port (1433)
+
 #         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',
+#             'driver': 'ODBC Driver 17 for SQL Server',  # Update the driver version if needed
+#             'MARS_Connection': 'True',  # Enables Multiple Active Result Sets (MARS)
 #         },
 #     }
 # }
-
 
 
 # Password validation
