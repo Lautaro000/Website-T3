@@ -1,10 +1,13 @@
 from rest_framework import serializers
 from tc2005.models import User
+from .permission_serializer import PermissionSerializer;
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-
     total_score = serializers.CharField()
     average_score = serializers.CharField()
+    user_permissions = PermissionSerializer(many=True, read_only=True)
+    
+
     
     class Meta:
         model = User

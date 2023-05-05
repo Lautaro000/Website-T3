@@ -74,6 +74,7 @@ function App() {
           <Route path="/signup" element={<SignUpV />} />
           <Route path="/" element={<HomeView/>}></Route>
           <Route path="/game" element={<GameView/>}></Route>
+          {/* <Route path="/admin" element={withAdminAuth(<AdminView />)} ></Route> */}
           <Route path="/admin" element={<AdminView />} ></Route>
           <Route path="/profile" element={<ProfileView />}></Route>
           <Route path="/scores" element={<ScoreListView/>}></Route>

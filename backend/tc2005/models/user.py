@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
 class UserManager(BaseUserManager):
@@ -31,9 +31,12 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=25, null=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
 
     objects = UserManager()
@@ -56,4 +59,11 @@ class User(AbstractBaseUser):
             return 0
         return self.total_score / len(scores)
 
+class SuperUser(User):
+    class Meta:
+        proxy = True
 
+    def save(self, *args, **kwargs):
+        self.is_staff = True
+        self.is_superuser = True
+        super().save(*args, **kwargs)
