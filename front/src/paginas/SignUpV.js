@@ -29,7 +29,7 @@ function SignUpV  ()  {
       "users/",
       (response) => {
         console.log(response);
-        window.location.href = "/";
+        window.location.href = "/login";
       },
       (response) => {
         console.log(response);
@@ -43,7 +43,13 @@ function SignUpV  ()  {
         method: "post",
         body: JSON.stringify(data),
       }
+
+      
+      
     );
+
+    
+      
     
 
   };

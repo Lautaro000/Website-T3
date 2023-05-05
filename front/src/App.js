@@ -32,6 +32,7 @@ function App() {
   //     alert(e);
   //   }
   // }
+  var Admin = localStorage.getItem("admin");
 
 
   return (
@@ -66,6 +67,7 @@ function App() {
       <Route path="/scores/:first_name" element={<UserScoreListView/>}></Route>
       </Routes>
       </BrowserRouter> */}
+      
     {localStorage.getItem("token") ? 
     <div>
       <BrowserRouter>
@@ -75,7 +77,8 @@ function App() {
           <Route path="/" element={<HomeView/>}></Route>
           <Route path="/game" element={<GameView/>}></Route>
           {/* <Route path="/admin" element={withAdminAuth(<AdminView />)} ></Route> */}
-          <Route path="/admin" element={<AdminView />} ></Route>
+          {/* <Route path="/admin" element={<AdminView />} ></Route> */}
+          {Admin === "true" ? (<Route path="/admin" element={<AdminView />} ></Route>): (<Route path="/admin" element={<LoginV />} ></Route>)}
           <Route path="/profile" element={<ProfileView />}></Route>
           <Route path="/scores" element={<ScoreListView/>}></Route>
           <Route path="/scores/:first_name" element={<UserScoreListView />} ></Route>
