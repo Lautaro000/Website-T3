@@ -77,19 +77,36 @@ function Graphs({ scores }) {
     TotalTime: score.time,
   }));
 
-  const topScore = scores.reduce((top, score) => {
-    return score.score > top.score ? score : top;
-  }, { score: 0 });
+  const topScore = scores.length
+    ? scores.reduce((top, score) => {
+        return score.score > top.score ? score : top;
+      }, { score: 0 })
+    : null;
 
-  const barData = [{ name: topScore.user.email, Score: topScore.score }];
+  const barData = topScore
+    ? [{ name: topScore.user.email, Score: topScore.score }]
+    : [];
 
   return (
     <section id="Graph">
       <div style={{ textAlign: "center" }}>
         <h2>Graphs</h2>
-        {/* ... (previous code unchanged) */}
-        
-        <BarChart
+        {scores.length > 0 ? (
+          <div className="graphs">
+            <PieChart width={400} height={400}>
+              <Pie
+                dataKey="TotalTime"
+                isAnimationActive={false}
+                data={pieData}
+                cx={200}
+                cy={200}
+                outerRadius={80}
+                fill="#72b840"
+                label
+              />
+              <Tooltip />
+            </PieChart>
+            <BarChart
           width={400}
           height={400}
           data={barData}
@@ -112,6 +129,10 @@ function Graphs({ scores }) {
           <CartesianGrid strokeDasharray="3 3" />
           <Bar dataKey="Score" fill="#72b840" />
         </BarChart>
+          </div>
+        ) : (
+          <p>No data available</p>
+        )}
       </div>
     </section>
   );
