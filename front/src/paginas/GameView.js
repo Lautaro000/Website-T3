@@ -4,10 +4,10 @@ import Navbar from "../components/Navigation";
 
 function GameView(){
     const { unityProvider } = useUnityContext({
-        loaderUrl: "Build/WebGL_Builds.loader.js",
-        dataUrl: "Build/WebGL_Builds.data.unityweb",
-        frameworkUrl: "Build/WebGL_Builds.framework.js.unityweb",
-        codeUrl: "Build/WebGL_Builds.wasm.unityweb",
+        loaderUrl: "Build/Downloads.loader.js",
+        dataUrl: "Build/Downloads.data.unityweb",
+        frameworkUrl: "Build/Downloads.framework.js.unityweb",
+        codeUrl: "Build/Downloads.wasm.unityweb",
       });
 
    return (<div>
@@ -18,7 +18,7 @@ function GameView(){
             style = {{
                 width: "1430px",
                 height: "800px",
-                border: "2px solid black",
+                border: "1px solid black",
                 alignSelf: 'center',
             }}/>
     </section>

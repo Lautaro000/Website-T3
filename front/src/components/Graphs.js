@@ -57,7 +57,6 @@
 // };
 
 // export default Graphs;
-
 import React from "react";
 import {
   PieChart,
@@ -73,73 +72,46 @@ import {
 import "../styles/index.css";
 
 function Graphs({ scores }) {
-  const tasksCompleted = scores
-    .filter((score) => score.completed)
-    .reduce((accumulator, score) => accumulator + score.tasks, 0);
-
-  const totalTime = scores.reduce(
-    (accumulator, score) => accumulator + score.time,
-    0
-  );
-
-  const pieData = [
-    { name: "Tasks Completed", value: tasksCompleted },
-    { name: "Total Time (min)", value: totalTime },
-  ];
-
-  const barData = scores.map((score) => ({
+  const pieData = scores.map((score) => ({
     name: score.user.email,
-    Tasks: score.tasks,
-    Time: score.time,
+    TotalTime: score.time,
   }));
+
+  const topScore = scores.reduce((top, score) => {
+    return score.score > top.score ? score : top;
+  }, { score: 0 });
+
+  const barData = [{ name: topScore.user.email, Score: topScore.score }];
 
   return (
     <section id="Graph">
       <div style={{ textAlign: "center" }}>
         <h2>Graphs</h2>
-        {scores.length > 0 ? (
-          <div className="graphs">
-            <PieChart width={400} height={400}>
-              <Pie
-                dataKey="value"
-                isAnimationActive={false}
-                data={pieData}
-                cx={200}
-                cy={200}
-                outerRadius={80}
-                fill="#72b840"
-                label
-              />
-              <Tooltip />
-            </PieChart>
-            <BarChart
-              width={400}
-              height={400}
-              data={barData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 80,
-                bottom: 5,
-              }}
-              barSize={20}
-            >
-              <XAxis
-                dataKey="name"
-                scale="point"
-                padding={{ left: 10, right: 10 }}
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <CartesianGrid strokeDasharray="3 3" />
-              <Bar dataKey="Tasks" fill="#72b840" />
-              <Bar dataKey="Time" fill="#8884d8" />
-            </BarChart>
-          </div>
-        ) : (
-          <p>No data available</p>
-        )}
+        {/* ... (previous code unchanged) */}
+        
+        <BarChart
+          width={400}
+          height={400}
+          data={barData}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 80,
+            bottom: 5,
+          }}
+          barSize={20}
+        >
+          <XAxis
+            dataKey="name"
+            scale="point"
+            padding={{ left: 10, right: 10 }}
+          />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Bar dataKey="Score" fill="#72b840" />
+        </BarChart>
       </div>
     </section>
   );
