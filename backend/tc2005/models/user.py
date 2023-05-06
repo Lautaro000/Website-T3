@@ -59,6 +59,40 @@ class User(AbstractBaseUser, PermissionsMixin):
             return 0
         return self.total_score / len(scores)
 
+    @property
+    def best_score(self):
+        from .scoreboad import Scoreboard
+        scores = Scoreboard.objects.all().filter(user=self)
+        if scores:
+            return max(score.score for score in scores)
+        return 0
+
+    @property
+    def worst_score(self):
+        from .scoreboad import Scoreboard
+        scores = Scoreboard.objects.all().filter(user=self)
+        if scores:
+            return min(score.score for score in scores)
+        return 0
+
+    @property
+    def average_time(self):
+        from .scoreboad import Scoreboard
+        scores = Scoreboard.objects.all().filter(user=self)
+        if scores and len(scores) > 0:
+            total_time = sum(score.time for score in scores)
+            return total_time / len(scores)
+        return 0
+
+
+    @property
+    def number_of_times_completed(self):
+        from .scoreboad import Scoreboard
+        completed_scores = Scoreboard.objects.all().filter(user=self, completed=True)
+        return len(completed_scores)
+
+
+
 class SuperUser(User):
     class Meta:
         proxy = True
