@@ -12,10 +12,11 @@ pip install mysql-connector-python
 pip install sqlserver
 pip install mssql-django
 
-Comando para levantar el backend
+Creacion de la base de datos
+python manage.py migrate
 
+
+Comando para levantar el backend	
 python manage.py runserver
 
-Creacion de la base de datos
 
-python manage.py migrate
